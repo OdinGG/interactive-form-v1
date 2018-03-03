@@ -5,6 +5,7 @@ const otherJob = document.getElementById('other');
 const design = document.getElementById('design');
 const color = document.getElementById('color');
 const colors = $(color).children();
+const colorsDiv = document.getElementById('colors-js-puns');
 const checkbox = $("[type*='checkbox']");
 const all = $("input[name='all']");
 const jsFrameworks = $("input[name='js-frameworks']");
@@ -21,13 +22,15 @@ let price = 0;
 var checked1 = true;
 var checked2 = true;
 var checked3 = true;
+var checked4 = true;
+var checked5 = true;
 
 paymentMethod.selectedIndex = 1;
 if (paymentMethod.value == 'credit card') {
     $('fieldset:nth-of-type(4) div:nth-of-type(3) p').hide();
     $('fieldset:nth-of-type(4) div:nth-of-type(2) p').hide();
 }
-
+$(colorsDiv).hide();
 nameInput.focus();
 $(otherJob).hide();
 
@@ -49,6 +52,7 @@ $(design).change(() => {
             } else {
                 $(colors[i]).show();
             }
+            $(colorsDiv).show();
         }
     else if (design.value == 'heart js') {
         if (colors[i].textContent.includes('JS shirt')) {
@@ -56,6 +60,9 @@ $(design).change(() => {
         } else {
             $(colors[i]).hide();
         }
+        $(colorsDiv).show();
+    } else {
+        $(colorsDiv).hide();
     }
 });
 
@@ -73,8 +80,6 @@ $(checkbox).change(() => {
     if ($(jsFrameworks).is(':checked')) {
         $(express).attr("disabled", true);
         $(express).parents('label').css('color', 'gray');
-        $(buildTools).attr("disabled", true);
-        $(buildTools).parents('label').css('color', 'gray');
         if (checked1) {
             price += 100;
         }
@@ -82,46 +87,33 @@ $(checkbox).change(() => {
     } else if ($(express).is(':checked') && checked1) {
         $(jsFrameworks).attr("disabled", true);
         $(jsFrameworks).parents('label').css('color', 'gray');
-        $(buildTools).attr("disabled", true);
-        $(buildTools).parents('label').css('color', 'gray');
         if (checked1) {
             price += 100;
         }
         checked1 = false;
-    } else if ($(buildTools).is(':checked')) {
-        $(jsFrameworks).attr("disabled", true);
-        $(jsFrameworks).parents('label').css('color', 'gray');
-        $(express).attr("disabled", true);
-        $(express).parents('label').css('color', 'gray');
-        if (checked1) {
-            price += 100;
-        }
-        checked1 = false;
-    } else if ($(buildTools).is(':checked') == false && $(express).is(':checked') == false && $(jsFrameworks).is(':checked') == false) {
+    } else if ($(express).is(':checked') == false && $(jsFrameworks).is(':checked') == false) {
         $(jsFrameworks).attr("disabled", false);
         $(express).attr("disabled", false);
-        $(buildTools).attr("disabled", false);
         $(jsFrameworks).parents('label').css('color', 'black');
-        $(buildTools).parents('label').css('color', 'black');
         $(express).parents('label').css('color', 'black');
         if (checked1 == false) {
             price -= 100;
         }
         checked1 = true;
     }
-
-    if ($(jsLibs).is(':checked')) {
-        $(npm).attr("disabled", true);
-        $(npm).parents('label').css('color', 'gray');
-        $(node).attr("disabled", true);
-        $(node).parents('label').css('color', 'gray');
-        if (checked3) {
+    if ($(buildTools).is(':checked')) {
+        if (checked4) {
             price += 100;
         }
-        checked3 = false;
-    } else if ($(npm).is(':checked') && checked1) {
-        $(jsLibs).attr("disabled", true);
-        $(jsLibs).parents('label').css('color', 'gray');
+        checked4 = false;
+    } else if ($(buildTools).is(':checked') == false) {
+        if (checked4 == false) {
+            price -= 100;
+        }
+        checked4 = true;
+    }
+
+    if ($(jsLibs).is(':checked')) {
         $(node).attr("disabled", true);
         $(node).parents('label').css('color', 'gray');
         if (checked3) {
@@ -131,23 +123,31 @@ $(checkbox).change(() => {
     } else if ($(node).is(':checked')) {
         $(jsLibs).attr("disabled", true);
         $(jsLibs).parents('label').css('color', 'gray');
-        $(npm).attr("disabled", true);
-        $(npm).parents('label').css('color', 'gray');
         if (checked3) {
             price += 100;
         }
         checked3 = false;
-    } else if ($(npm).is(':checked') == false && $(node).is(':checked') == false && $(jsLibs).is(':checked') == false) {
-        $(npm).attr("disabled", false);
+    } else if ($(node).is(':checked') == false && $(jsLibs).is(':checked') == false) {
         $(jsLibs).attr("disabled", false);
         $(node).attr("disabled", false);
-        $(npm).parents('label').css('color', 'black');
         $(node).parents('label').css('color', 'black');
         $(jsLibs).parents('label').css('color', 'black');
         if (checked3 == false) {
             price -= 100;
         }
         checked3 = true;
+    }
+    if ($(npm).is(':checked') && checked5) {
+        if (checked5) {
+            price += 100;
+        }
+        checked5 = false;
+    }
+    else if ($(npm).is(':checked') == false){
+        if (checked5 == false){
+            price -= 100;
+        }
+        checked5 = true;
     }
     $('#price').text('Total: $' + price);
 });
@@ -178,15 +178,13 @@ document.querySelector('form').addEventListener('submit', (e) => {
     if (/\S+@\S+\.\S+/.test(emailInput.value) == false) {
         e.preventDefault();
         emailInput.style.backgroundColor = 'tomato';
-    }
-    else{
+    } else {
         emailInput.style.backgroundColor = '';
     }
     if (price == 0) {
         e.preventDefault();
         $('.activities').css("background-color", "tomato");
-    }
-    else{
+    } else {
         $('.activities').css("background-color", "");
     }
     if (paymentMethod.value == 'credit card') {
